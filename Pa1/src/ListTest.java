@@ -5,15 +5,14 @@ public class ListTest {
 		List A = new List();
 		List B = new List();
 		
-		A.prepend(5);
-		A.prepend(4);
-		A.prepend(3);
-		A.prepend(2);
+		A.append(5);
+		A.append(4);
+		A.insertBefore(3);
+		A.append(2);
 		A.moveFront();
 		while(A.index()>=0){
-			System.out.println(A.index());
 			System.out.println(A.get());
-			A.moveNext();
+			A.movePrev();
 		}
 //		System.out.println(A.index());
 //		System.out.println(A.get());

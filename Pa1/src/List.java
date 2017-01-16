@@ -172,6 +172,44 @@ public class List {
 		}	
 	}
 	
+	//Append function for adding nodes at the end of the list 
+	void append(int data){
+		Node newNode = new Node(data);
+		if(this.length == 0){
+			this.front = newNode;
+			this.back = newNode;
+			this.curr = newNode;
+			this.length = 1;
+		}
+		else{
+			newNode.prev = back;
+			back.next = newNode;
+			newNode.next = null;
+			back = newNode;
+			length += 1;
+			index += 1;
+		}	
+	}
+	
+	//Inserting a node before 
+	
+	void insertBefore(int data){
+		if(this.length < 0)
+		{
+			throw new RuntimeException("Failed precondition length > 0");
+		}
+		if(this.index < 0)
+		{
+			throw new RuntimeException("Failed precondition index > 0");
+		}
+		Node newNode = new Node(data);
+		newNode.next = curr;
+		newNode.prev = curr.prev;
+		curr.prev = newNode;
+		curr.prev.next = newNode;
+		
+	}
+	
 	
 	
 }
