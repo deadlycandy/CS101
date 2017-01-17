@@ -7,36 +7,17 @@ public class ListTest {
 		
 		A.append(5);
 		A.append(4);
-		A.insertBefore(3);
+		A.moveBack();
+
+		System.out.println(A.index());
+		System.out.println(A.get());
+		A.insertAfter(3);
 		A.append(2);
-		A.moveFront();
 		while(A.index()>=0){
+			System.out.println(A.index());
 			System.out.println(A.get());
-			A.movePrev();
+			A.moveNext();
 		}
-//		System.out.println(A.index());
-//		System.out.println(A.get());
-//		A.movePrev();
-//		System.out.println(A.index());
-//		System.out.println(A.get());
-//		A.movePrev();
-//		System.out.println(A.index());
-//		System.out.println(A.get());
-//		A.movePrev();
-//		System.out.println(A.index());
-//		System.out.println(A.get());
-//		System.out.println("Moving forward");
-//		System.out.println(A.index());
-//		System.out.println(A.get());
-//		A.moveNext();
-//		System.out.println(A.index());
-//		System.out.println(A.get());
-//		A.moveNext();
-//		System.out.println(A.index());
-//		System.out.println(A.get());
-//		A.moveNext();
-//		System.out.println(A.index());
-//		System.out.println(A.get());
 	}
 
 }

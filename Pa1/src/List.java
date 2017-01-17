@@ -13,7 +13,8 @@ public class List {
 		//constructor 
 		Node(int data){
 			this.data = data;
-			next = null;
+			this.next = null;
+			this.prev = null;
 		}
 		
 		//toString function override
@@ -32,7 +33,8 @@ public class List {
 	//Constructor 
 	List(){
 		front = curr = back = null;
-		length = index = 0;
+		length = 0;
+		index = -1;
 	}
 	
 	//Access functions 
@@ -47,7 +49,6 @@ public class List {
 	 int index(){
 		 if(curr == null)
 		 {
-			 index = -1;
 			 return -1;
 		 }
 		 return this.index;
@@ -57,7 +58,7 @@ public class List {
 	int front(){
 		if(this.length < 0)
 		{
-			throw new RuntimeException("Failed precondition length > 0");
+			throw new RuntimeException("Failed precondition length < 0");
 		}
 		return this.front.data;
 	}
@@ -66,7 +67,7 @@ public class List {
 	int back(){
 		if(this.length < 0)
 		{
-			throw new RuntimeException("Failed precondition length > 0");
+			throw new RuntimeException("Failed precondition length < 0");
 		}
 		return this.back.data;
 	}
@@ -75,11 +76,11 @@ public class List {
 	int get(){
 		if(this.length < 0)
 		{
-			throw new RuntimeException("Failed precondition length > 0");
+			throw new RuntimeException("Failed precondition length < 0");
 		}
 		if(this.index < 0)
 		{
-			throw new RuntimeException("Failed precondition index > 0");
+			throw new RuntimeException("Failed precondition index < 0");
 		}
 		return this.curr.data; 
 	}
@@ -111,7 +112,7 @@ public class List {
 		}
 		front = back = curr = null;
 		length = 0;
-		index = 0;
+		index = -1;
 	}
 	
 	//Moves cursor to the front of the list
@@ -128,7 +129,7 @@ public class List {
 			curr = back;
 		}
 		
-		index = length -1;
+		index = length;
 	}
 	
 	//Moves one to the left (previous)
@@ -138,6 +139,7 @@ public class List {
 			index -= 1;
 		}
 		else if(curr == front){
+			index = -1;
 			curr = null;
 		}
 	}
@@ -149,6 +151,7 @@ public class List {
 			index += 1;
 		}
 		else if(curr == back){
+			index = -1;
 			curr = null;
 		}
 	}
@@ -159,7 +162,6 @@ public class List {
 		if(this.length == 0){
 			this.front = newNode;
 			this.back = newNode;
-			this.curr = newNode;
 			this.length = 1;
 		}
 		else{
@@ -178,16 +180,14 @@ public class List {
 		if(this.length == 0){
 			this.front = newNode;
 			this.back = newNode;
-			this.curr = newNode;
 			this.length = 1;
 		}
 		else{
-			newNode.prev = back;
 			back.next = newNode;
-			newNode.next = null;
+			newNode.prev = back;
 			back = newNode;
+			newNode.next = null;
 			length += 1;
-			index += 1;
 		}	
 	}
 	
@@ -196,17 +196,38 @@ public class List {
 	void insertBefore(int data){
 		if(this.length < 0)
 		{
-			throw new RuntimeException("Failed precondition length > 0");
+			throw new RuntimeException("Failed precondition length < 0");
 		}
 		if(this.index < 0)
 		{
-			throw new RuntimeException("Failed precondition index > 0");
+			throw new RuntimeException("Failed precondition index < 0");
 		}
 		Node newNode = new Node(data);
-		newNode.next = curr;
-		newNode.prev = curr.prev;
-		curr.prev = newNode;
 		curr.prev.next = newNode;
+		newNode.prev = curr.prev;
+		newNode.next = curr;
+		curr.prev = newNode;
+		index += 1;
+		length += 1;
+		
+	}
+	
+	void insertAfter(int data){
+		if(this.length < 0)
+		{
+			throw new RuntimeException("Failed precondition length < 0");
+		}
+		if(this.index < 0)
+		{
+			throw new RuntimeException("Failed precondition index < 0");
+		}
+		Node newNode = new Node(data);
+		curr.next = newNode;
+		newNode.next = curr.next;
+		curr.next.prev = newNode;
+		newNode.prev = curr;
+		length += 1;
+		//index += 1;
 		
 	}
 	
