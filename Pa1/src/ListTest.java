@@ -23,7 +23,6 @@ public class ListTest {
 	      List C = A.copy();
 	      System.out.println(A.equals(B));
 	      System.out.println(B.equals(C));
-	      System.out.println("error"); // error in trying to get C == A
 	      System.out.println(C.equals(A));
 	      
 	      A.moveFront();

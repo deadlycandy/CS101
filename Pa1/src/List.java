@@ -94,6 +94,8 @@ public class List {
 				if(current.data != current2.data){
 					return false;
 				}
+				current = current.next;
+				current2 = current2.next;
 			}
 			return true;
 		}
@@ -285,10 +287,10 @@ public class List {
 		return strList;
 	}
 	
-	//Copys into a new list
+	//Copy into a new list
 	List copy(){
 		List c = new List();
-		Node temp = front;
+		Node temp = this.front;
 		while(temp != null){
 			c.append(temp.data);
 			temp = temp.next;
