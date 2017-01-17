@@ -56,7 +56,7 @@ public class List {
 	
 	// returns the front element 
 	int front(){
-		if(this.length < 0)
+		if(this.length <= 0)
 		{
 			throw new RuntimeException("Failed precondition length < 0");
 		}
@@ -65,7 +65,7 @@ public class List {
 	
 	//returns the back element
 	int back(){
-		if(this.length < 0)
+		if(this.length <= 0)
 		{
 			throw new RuntimeException("Failed precondition length < 0");
 		}
@@ -74,7 +74,7 @@ public class List {
 	
 	//returns the cursor element 
 	int get(){
-		if(this.length < 0)
+		if(this.length <= 0)
 		{
 			throw new RuntimeException("Failed precondition length < 0");
 		}
@@ -90,7 +90,7 @@ public class List {
 		if(this.length == L.length){
 			Node current = this.front;
 			Node current2 = L.front;
-			while(current.next != null && current2.next != null){
+			while(current != null && current2 != null){
 				if(current.data != current2.data){
 					return false;
 				}
@@ -129,7 +129,7 @@ public class List {
 			curr = back;
 		}
 		
-		index = length;
+		index = length -1;
 	}
 	
 	//Moves one to the left (previous)
@@ -191,10 +191,10 @@ public class List {
 		}	
 	}
 	
-	//Inserting a node before 
+	//Inserting a node before cursor (NULL PROB)
 	
 	void insertBefore(int data){
-		if(this.length < 0)
+		if(this.length <= 0)
 		{
 			throw new RuntimeException("Failed precondition length < 0");
 		}
@@ -212,8 +212,9 @@ public class List {
 		
 	}
 	
+	//Inserting a node after cursor (NULL PROB)
 	void insertAfter(int data){
-		if(this.length < 0)
+		if(this.length <= 0)
 		{
 			throw new RuntimeException("Failed precondition length < 0");
 		}
@@ -222,15 +223,79 @@ public class List {
 			throw new RuntimeException("Failed precondition index < 0");
 		}
 		Node newNode = new Node(data);
-		curr.next = newNode;
 		newNode.next = curr.next;
-		curr.next.prev = newNode;
+		curr.next = newNode;
+		newNode.next.prev = newNode;
 		newNode.prev = curr;
 		length += 1;
-		//index += 1;
 		
 	}
 	
+	//Deletes front element
+	void deleteFront(){
+		if(this.length <= 0)
+		{
+			throw new RuntimeException("Failed precondition length < 0");
+		}
+		Node temp = front;
+		front = front.next;
+		temp = null;
+		index -= 1;
+		length -= 1;
+	}
+	
+	//Deletes back elements
+	void deleteBack(){
+		if(this.length <= 0)
+		{
+			throw new RuntimeException("Failed precondition length < 0");
+		}
+		Node temp = back;
+		back = back.prev;
+		temp = null;
+		length -=1;
+	}
+	
+	//Deletes cursor elements (NULL PROB)
+	void delete(){
+		if(this.length <= 0)
+		{
+			throw new RuntimeException("Failed precondition length < 0");
+		}
+		if(this.index < 0)
+		{
+			throw new RuntimeException("Failed precondition index < 0");
+		}
+		curr.prev.next = curr.next;
+		curr.next.prev = curr.prev;
+		curr = null;
+		length -= 1;
+		index = -1;
+	}
+	
+	//ToString method for printing out a list
+	public String toString(){
+		Node temp = front;
+		String strList = "";
+		while(temp != null){
+			strList += temp.data;
+			strList += " ";
+			temp = temp.next;
+		}
+		return strList;
+	}
+	
+	//Copys into a new list
+	List copy(){
+		List c = new List();
+		Node temp = front;
+		while(temp != null){
+			c.append(temp.data);
+			temp = temp.next;
+		}
+		return c;
+		
+	}
 	
 	
 }
