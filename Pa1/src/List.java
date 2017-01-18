@@ -193,7 +193,7 @@ public class List {
 		}	
 	}
 	
-	//Inserting a node before cursor (NULL PROB)
+	//Inserting a node before cursor 
 	
 	void insertBefore(int data){
 		if(this.length <= 0)
@@ -204,17 +204,23 @@ public class List {
 		{
 			throw new RuntimeException("Failed precondition index < 0");
 		}
-		Node newNode = new Node(data);
-		curr.prev.next = newNode;
-		newNode.prev = curr.prev;
-		newNode.next = curr;
-		curr.prev = newNode;
-		index += 1;
-		length += 1;
+		if(curr.prev == null)
+		{
+			this.prepend(data);
+		}
+		else{
+			Node newNode = new Node(data);
+			curr.prev.next = newNode;
+			newNode.prev = curr.prev;
+			newNode.next = curr;
+			curr.prev = newNode;
+			index += 1;
+			length += 1;
+		}
 		
 	}
 	
-	//Inserting a node after cursor (NULL PROB)
+	//Inserting a node after cursor 
 	void insertAfter(int data){
 		if(this.length <= 0)
 		{
@@ -224,12 +230,18 @@ public class List {
 		{
 			throw new RuntimeException("Failed precondition index < 0");
 		}
-		Node newNode = new Node(data);
-		newNode.next = curr.next;
-		curr.next = newNode;
-		newNode.next.prev = newNode;
-		newNode.prev = curr;
-		length += 1;
+		if(curr.next == null)
+		{
+			this.append(data);
+		}
+		else{
+			Node newNode = new Node(data);
+			newNode.next = curr.next;
+			curr.next = newNode;
+			newNode.next.prev = newNode;
+			newNode.prev = curr;
+			length += 1;
+		}
 		
 	}
 	
@@ -239,9 +251,8 @@ public class List {
 		{
 			throw new RuntimeException("Failed precondition length < 0");
 		}
-		Node temp = front;
 		front = front.next;
-		temp = null;
+		front.prev = null;
 		index -= 1;
 		length -= 1;
 	}
@@ -252,9 +263,8 @@ public class List {
 		{
 			throw new RuntimeException("Failed precondition length < 0");
 		}
-		Node temp = back;
 		back = back.prev;
-		temp = null;
+		back.next = null;
 		length -=1;
 	}
 	
@@ -268,11 +278,20 @@ public class List {
 		{
 			throw new RuntimeException("Failed precondition index < 0");
 		}
-		curr.prev.next = curr.next;
-		curr.next.prev = curr.prev;
-		curr = null;
-		length -= 1;
-		index = -1;
+		if(curr.next ==  null){
+			this.deleteBack();
+		}
+		else if(curr.prev == null){
+			this.deleteFront();
+		}
+		else{
+			curr.prev.next = curr.next;
+			curr.next.prev = curr.prev;
+			curr = null;
+			length -= 1;
+			index = -1;
+		}
+		
 	}
 	
 	//ToString method for printing out a list
