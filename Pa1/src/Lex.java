@@ -2,31 +2,46 @@
 public class Lex {
 
 	public static void main(String[] args) {
-		String[] A = {"One", "Two", "Three", "Four", "Five"};
+		//cat rat bat hat vat mat pet set met fat 
+		String[] A = {"Cat", "rat", "Bat", "hat", "Eleven", "Ten", "Cat", "set", "pEt", "vat", "mat", "Ten"};
+		for(int k = 0; k < A.length; k++){
+			A[k] = A[k].toLowerCase();
+		}
 		List L = new List();
 		List L2 = new List();
 		for(int j = 0; j < A.length; j++){
 			L.append(j);
 		}
-		for(int i = 0; i < A.length; i++){
+		
+		for(int i = 1; i < A.length; i++){
 			String x = A[i];
-			int j = i - 1;
+			int j = i;
 			L.moveFront();
-			while(A[L.get()].compareTo(A[j]) < 0 ){
+			//Grabbing J
+			while(j > 0 && L.index()>=0){
 				L.moveNext();
+//				System.out.println("Loop " + L.index());
+				j--;
 			}
+//			System.out.println("temp " + L.get());
 			int temp = L.get();
 			L.delete();
 			L.moveFront();
-			while(j >= 0){
+			
+			
+			//Finding j-1
+			j = i -1;
+			while(j >= 0 && A[L.get()].compareTo(x) < 0 ){
 				L.moveNext();
+//				System.out.println("Loop1 " + L.index());
 				j--;
 			}
-			while(A[L.get()].compareTo(x) < 0){
-				L.movePrev();
-			}
 			L.insertBefore(temp);
-			System.out.println(L.toString());
+		}
+		L.moveFront();
+		while(L.index() >= 0){
+			System.out.println(A[L.get()]);
+			L.moveNext();
 		}
 		
 		
