@@ -1,6 +1,15 @@
-/*
- *  This is a list ADT 
+/*---------------------------------------------------------------------------------------
  * 
+ * Rahil Bhatnagar
+ * Rabhatna
+ * CMPS101
+ * Programming Assignment 1 
+ * Lex.java
+ * 
+ * This is a list ADT with multiple access and manipulation functions. Uses a private node
+ * class to create the list and holds an int data type. 
+ * 
+ * ---------------------------------------------------------------------------------------
  */
 public class List {
 	
