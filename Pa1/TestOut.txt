@@ -1,0 +1,2 @@
+hello world this is the first program for cs101. my name is lex.java. 
+this evening i am going to kick your ass.

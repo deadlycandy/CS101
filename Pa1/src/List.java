@@ -279,10 +279,18 @@ public class List {
 			throw new RuntimeException("Failed precondition index < 0");
 		}
 		if(curr.next ==  null){
-			this.deleteBack();
+			back = back.prev;
+			back.next = null;
+			curr = null;
+			length -= 1;
+			index = -1;
 		}
 		else if(curr.prev == null){
-			this.deleteFront();
+			front = front.next;
+			front.prev = null;
+			curr = null;
+			length -= 1;
+			index = -1;
 		}
 		else{
 			curr.prev.next = curr.next;
