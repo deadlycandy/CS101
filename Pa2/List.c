@@ -6,6 +6,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include "List.h"
 
 // structs
 
@@ -44,7 +45,7 @@ void freeNode(Node* pN){
 
 List newList(void){
 	List L;
-	L = malloc(sizeof(ListObj);
+	L = malloc(sizeof(ListObj));
 	L->front = NULL;
 	L->back = NULL;
 	L->curr = NULL;
@@ -119,6 +120,10 @@ int get(List L){
 		printf("List Error: calling get() failed precondition length <= 0\n");
 		exit(1);
 	}
+	if(L->index < 0){
+		printf("List Error: calling get() failed precondition index < 0\n");
+		exit(1);
+	}
 	return(L->curr->data);
 }
 
@@ -136,17 +141,17 @@ int equals(List A, List B){
 		Node curr2 = B->front;
 		while(curr1 != NULL && curr2 != NULL){
 			if(curr1->data != curr2->data){
-				return(false);
+				return(0);
 			}
 			curr1 = curr1->next;
 			curr2 = curr2->next;
 		}
 		free(curr1);
 		free(curr2);
-		return(true);
+		return(1);
 	}
 	else{
-		return(false);
+		return(0);
 	}
 }
 
@@ -170,14 +175,258 @@ void clear(List L){
 }
 
 void moveFront(List L){
-	if(L == NULL{
+	if(L == NULL){
 		printf("List Error: calling moveFront() NULL List refference\n");
 		exit(1);
 	}
-	if(L->length <= 0){
-		printf("List Error: calling moveFront() failed precondition length <= 0\n");
+	if(L->length > 0){
+		L->curr = L->front;
+		L->index = 0;
 	}
 }
+
+void moveBack(List L){
+	if(L == NULL){
+		printf("List Error: calling moveBack() NULL List refference\n");
+		exit(1);
+	}
+	if(L->length > 0){
+		L->curr = L->back;
+		L->index = L->length - 1;
+	}
+}
+
+void movePrev(List L){
+	if(L == NULL){
+		printf("List Error: calling movePrev() NULL List refference\n");
+		exit(1);
+	}
+	if(L->curr != NULL && L->curr != L->front){
+		L->curr = L->curr->prev;
+		L->index = L->index - 1;
+	} 
+	else if(L->curr == L->front){
+		L->index = -1;
+		L->curr = NULL;
+	}
+}
+
+void moveNext(List L){
+	if(L == NULL){
+		printf("List Error: calling moveNext() NULL List refference\n");
+		exit(1);
+	}
+	if(L->curr != NULL && L-> curr != L->front){
+		L->curr = L->curr->next;
+		L->index = L->index + 1;
+	}
+	else if(L->curr == L->back){
+		L->curr = NULL;
+		L->index = -1;
+	}
+}
+
+void prepend(List L, int data){
+	if(L == NULL){
+		printf("List Error: calling prepend() NULL List refference\n");
+		exit(1);
+	}
+	Node n = newNode(data);	
+	if(L->length == 0){
+		L->front = n;
+		L->back = n;
+		L->length = 1;
+	}
+	else{
+		n->next =  L->front;
+		L->front->prev = n;
+		n->prev = NULL;
+		L->front = n;
+		L->index += 1;
+		L->length +=1;		
+	}
+}
+
+
+void append(List L, int data){
+	if(L == NULL){
+		printf("List Error: calling append() NULL List refference\n");
+		exit(1);
+	}
+	Node n = newNode(data);	
+	if(L->length == 0){
+		L->front = n;
+		L->back = n;
+		L->length = 1;
+	}
+	else{
+		n->prev = L->back;
+		L->back->next = n;
+		n->next = NULL;
+		L->back = n;
+		L->length +=1;		
+	}
+}
+
+void insertBefore(List L, int data){
+	if(L == NULL){
+		printf("List Error: calling insertBefore() NULL List refference\n");
+		exit(1);
+	}
+	if(L->index < 0){
+		printf("List Error: calling insertBefore() failed precondition index < 0\n");
+		exit(1); 
+	}
+	if(L->length <= 0){
+		printf("List Error: calling insertBefore() failed precondition length <= 0\n");
+		exit(1);
+	}
+	if(L->curr->prev == NULL){
+		prepend(L, data);
+	}
+	else{
+		Node n = newNode(data);
+		L->curr->prev->next = n;
+		n->prev = L->curr->prev;
+		n->next = L->curr;
+		L->curr->prev = n;
+		L->index += 1;
+		L->length += 1;
+	}
+}
+
+
+void insertAfter(List L, int data){
+	if(L == NULL){
+		printf("List Error: calling insertAfter() NULL List refference\n");
+		exit(1);
+	}
+	if(L->index < 0){
+		printf("List Error: calling insertAfter() failed precondition index < 0\n");
+		exit(1); 
+	}
+	if(L->length <= 0){
+		printf("List Error: calling insertAfter() failed precondition length <= 0\n");
+		exit(1);
+	}
+	if(L->curr->prev == NULL){
+		append(L, data);
+	}
+	else{
+		Node n = newNode(data);
+		n->next = L->curr->next;
+		L->curr->next = n;
+		n->next->prev = n;
+		n->prev = L->curr;
+		L->length += 1;
+	}
+}
+
+void deleteFront(List L){
+	if(L == NULL){
+		printf("List Error: calling deleteFront() NULL List refference\n");
+		exit(1);
+	}
+	if(L->length <= 0){
+		printf("List Error: calling deleteFront() failed precondition length <= 0\n");
+		exit(1);
+	}
+	L->front = L->front->next;
+	free(L->front->prev);
+	L->front->prev = NULL;
+	L->index -= 1;
+	L->length -= 1;
+}
+
+
+void deleteBack(List L){
+	if(L == NULL){
+		printf("List Error: calling deleteBack() NULL List refference\n");
+		exit(1);
+	}
+	if(L->length <= 0){
+		printf("List Error: calling deleteBack() failed precondition length <= 0\n");
+		exit(1);
+	}
+	L->back = L->back->prev;
+	free(L->back->next);
+	L->back->next = NULL;
+	L->length -= 1;
+}
+
+void delete(List L){
+	if(L == NULL){
+		printf("List Error: calling delete() NULL List refference\n");
+		exit(1);
+	}
+	if(L->length <= 0){
+		printf("List Error: calling delete() failed precondition length <= 0\n");
+		exit(1);
+	}
+	if(L->index < 0){
+		printf("List Error: calling delete() failed precondition index < 0\n");
+		exit(1);
+	}
+	if(L->curr->next == NULL){
+		L->back = L->back->prev;
+		free(L->back->next);
+		L->back->next = NULL;
+		L->curr = NULL;
+		L->index = -1;
+		L->length -= 1;
+	}
+	else if(L->curr->prev == NULL){
+		L->front = L->front->next;
+		free(L->front->prev);
+		L->front->prev = NULL;
+		L->curr = NULL;
+		L->index = -1;
+		L->length -=1;
+	}
+	else{
+		L->curr->prev->next = L->curr->next;
+		L->curr->next->prev = L->curr->prev;
+		free(L->curr);
+		L->curr = NULL;
+		L->index = -1;
+		L->length -= 1;
+	}
+}
+
+void printList(FILE* out, List L){
+	if(L == NULL){
+		printf("List Error: calling printList() NULL List refference\n");
+		exit(1);
+	}
+	Node n;
+	n = L->front;
+	while(n != NULL){
+		fprintf(out, "%d", n->data);
+  		n = n->next;
+	}
+	free(n);
+	n = NULL;
+}
+
+List copyList(List L){
+	if(L == NULL){
+		printf("List Error: calling copyList() NULL List refference\n");
+		exit(1);
+	}
+	Node n = L->front;
+	List L2 = newList();
+	while(n != NULL){
+		append(L2, n->data);
+		n = n->next;
+	}
+	free(n);
+	n = NULL;
+	return(L2);
+}
+
+
+
+
 
 
 

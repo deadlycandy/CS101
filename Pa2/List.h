@@ -2,6 +2,7 @@
 	List ADT, equiped with access and manipulation functions. 
 
 */
+#include <stdio.h>
 
 #ifndef _LIST_H_INCLUDE_
 #define _LIST_H_INCLUDE_
