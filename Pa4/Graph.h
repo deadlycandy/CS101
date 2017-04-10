@@ -2,8 +2,8 @@
 #define _GRAPH_H_INCLUDE_
 #include "List.h"
 
-#define INF  -1;
-#define NIL  -2;
+#define INF  -1
+#define NIL  -2
 
 //Exported type
 typedef struct GraphObj* Graph;

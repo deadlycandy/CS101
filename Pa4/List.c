@@ -283,6 +283,7 @@ void append(List L, int data){
 		L->back = n;
 		L->length +=1;		
 	}
+
 }
 
 //inserts a new node before the cursor if index > 0 and length > 0 
@@ -350,11 +351,19 @@ void deleteFront(List L){
 		printf("List Error: calling deleteFront() failed precondition length <= 0\n");
 		exit(1);
 	}
-	L->front = L->front->next;
-	free(L->front->prev);
-	L->front->prev = NULL;
-	L->index -= 1;
-	L->length -= 1;
+
+        if(L->length==1)
+	{
+		L->front=L->back=NULL;
+		L->index=-1;
+		L->length=0;
+	}else{
+		L->front = L->front->next;
+		free(L->front->prev);
+		L->front->prev = NULL;
+		L->index -= 1;
+		L->length -= 1;
+	}
 }
 
 //deletes the back element of the list if length > 0
@@ -367,10 +376,17 @@ void deleteBack(List L){
 		printf("List Error: calling deleteBack() failed precondition length <= 0\n");
 		exit(1);
 	}
-	L->back = L->back->prev;
-	free(L->back->next);
-	L->back->next = NULL;
-	L->length -= 1;
+        if(L->length==1)
+	{
+		L->front=L->back=NULL;
+		L->index=-1;
+		L->length=0;
+	}else{
+		L->back = L->back->prev;
+		free(L->back->next);
+		L->back->next = NULL;
+		L->length -= 1;
+	}
 }
 
 //deletes the element the cursor is on if length > 0 and index > 0 
@@ -403,8 +419,11 @@ void delete(List L){
 		L->curr = NULL;
 		L->index = -1;
 		L->length -=1;
-	}
-	else{
+	}else if(L->length == 1){
+		L->front=L->back=L->curr=NULL;
+		L->index=-1;
+		L->length=0;
+	}else{
 		L->curr->prev->next = L->curr->next;
 		L->curr->next->prev = L->curr->prev;
 		free(L->curr);
